@@ -163,6 +163,7 @@ contract MultiSafe {
      * @param _value Ether value of the transaction.
      * @param _deadline Deadline for confirming the transaction.
      * @param _data Transaction data.
+     * @return ID of new transaction.
      */
     function submitTransaction(address _to, uint256 _value, uint256 _deadline, bytes memory _data)
         external
@@ -227,6 +228,7 @@ contract MultiSafe {
     /**
      * @dev Execute a confirmed transaction.
      * @param _transactionIndex Index of the transaction to execute.
+     * @return Return data of transaction execution.
      */
     function executeTransaction(uint256 _transactionIndex)
         external
@@ -264,8 +266,16 @@ contract MultiSafe {
     //////////////////////////////////////////////////////////////*/
 
     /**
+     * @dev Get the number of owners.
+     * @return Number of owners.
+     */
+    function getOwnersLength() external view returns (uint256) {
+        return owners.length;
+    }
+
+    /**
      * @dev Get the list of owners.
-     * @return owners List of owners.
+     * @return List of owners.
      */
     function getOwners() external view returns (address[] memory) {
         return owners;
@@ -273,18 +283,26 @@ contract MultiSafe {
 
     /**
      * @dev Get a specific owner at a given index from owners.
-     * @return owner Address of owner at given index.
+     * @return Address of owner at given index.
      */
     function getOwnerAtIndex(uint256 _index) external view returns (address) {
         return owners[_index];
     }
 
     /**
-     * @dev Get the count of transactions.
-     * @return count Count of transactions.
+     * @dev Get the number of transactions.
+     * @return Number of transactions.
      */
     function getTransactionCount() external view returns (uint256) {
         return transactions.length;
+    }
+
+    /**
+     * @dev Get the list of transactions.
+     * @return List of transactions.
+     */
+    function getTransactions() external view returns (Transaction[] memory) {
+        return transactions;
     }
 
     /**

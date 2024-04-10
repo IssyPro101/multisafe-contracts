@@ -29,7 +29,7 @@ contract MultiSafeFactory {
         return address(newWallet);
     }
 
-    function getNumAllWalets() external view returns (uint256) {
+    function getNumAllWallets() external view returns (uint256) {
         return wallets.length;
     }
 
