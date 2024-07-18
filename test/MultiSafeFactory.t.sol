@@ -29,7 +29,7 @@ contract MultiSafeTest is Test {
         owners[1] = owner2;
         owners[2] = owner3;
 
-        address multiSafeAddress = multiSafeFactory.deployMultiSafeWallet(owners, 3);
+        address multiSafeAddress = multiSafeFactory.deployMultiSafeWallet(owners, 3, "Test Wallet Name", "Test IPFS Link");
 
         MultiSafe multiSafe = MultiSafe(payable(multiSafeAddress));
 

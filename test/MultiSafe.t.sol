@@ -24,7 +24,7 @@ contract MultiSafeTest is Test {
         owners[1] = owner2;
         owners[2] = owner3;
 
-        multiSafe = new MultiSafe(owners, 3);
+        multiSafe = new MultiSafe(owners, 3, "Test Wallet Name", "Test IPFS Link");
 
         for (uint256 i = 0; i < owners.length; i++) {
             assertEq(owners[i], multiSafe.owners(i));

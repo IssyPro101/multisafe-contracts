@@ -7,6 +7,11 @@ import {MultiSafe} from "./MultiSafe.sol";
  * @dev A factory to deploy MultiSafe wallets
  */
 contract MultiSafeFactory {
+    /*//////////////////////////////////////////////////////////////
+                               EVENTS
+    //////////////////////////////////////////////////////////////*/
+
+    event WalletCreated(address indexed sender, address indexed _newWallet);
 
     /*//////////////////////////////////////////////////////////////
                              STATE VARIABLES
@@ -19,13 +24,16 @@ contract MultiSafeFactory {
     /*//////////////////////////////////////////////////////////////
                              FACTORY LOGIC
     //////////////////////////////////////////////////////////////*/
-    function deployMultiSafeWallet(address[] memory _owners, uint256 _numConfirmationsRequired) external returns (address) {
-        MultiSafe newWallet = new MultiSafe(_owners, _numConfirmationsRequired);
+    function deployMultiSafeWallet(address[] memory _owners, uint256 _numConfirmationsRequired, string memory _name, string memory _image) external returns (address) {
+        MultiSafe newWallet = new MultiSafe(_owners, _numConfirmationsRequired, _name, _image);
         wallets.push(address(newWallet));
         for (uint256 i = 0; i < _owners.length; i++) {
             userWallets[_owners[i]].push(address(newWallet));
         }
         isWalletCreated[address(newWallet)] = true;
+
+        emit WalletCreated(msg.sender, address(newWallet));
+
         return address(newWallet);
     }
 

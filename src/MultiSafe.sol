@@ -60,6 +60,8 @@ contract MultiSafe {
     address[] public owners;
     mapping(address => bool) public isOwner;
     uint256 public numConfirmationsRequired;
+    string public name;
+    string public image;
 
     mapping(uint256 => mapping(address => bool)) public hasOwnerConfirmed;
 
@@ -118,6 +120,13 @@ contract MultiSafe {
         _;
     }
 
+    modifier deadlineAfterCurrentTime(uint256 _deadline) {
+        if (block.timestamp > _deadline) {
+            revert TransactionDeadlinePassed();
+        }
+        _;
+    }
+
     /*//////////////////////////////////////////////////////////////
                               CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
@@ -127,7 +136,7 @@ contract MultiSafe {
      * @param _owners List of initial owners of the MultiSafe contract.
      * @param _numConfirmationsRequired Number of confirmations required for a transaction to be executed.
      */
-    constructor(address[] memory _owners, uint256 _numConfirmationsRequired) {
+    constructor(address[] memory _owners, uint256 _numConfirmationsRequired, string memory _name, string memory _image) {
         if (_owners.length == 0) {
             revert NonZeroOwnersRequired();
         }
@@ -151,6 +160,8 @@ contract MultiSafe {
         }
 
         numConfirmationsRequired = _numConfirmationsRequired;
+        name = _name;
+        image = _image;
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -168,6 +179,7 @@ contract MultiSafe {
     function submitTransaction(address _to, uint256 _value, uint256 _deadline, bytes memory _data)
         external
         onlyOwner
+        deadlineAfterCurrentTime(_deadline)
         returns (uint256)
     {
         uint256 transactionIndex = transactions.length;
